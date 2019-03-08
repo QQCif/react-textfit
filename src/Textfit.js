@@ -7,17 +7,17 @@ import throttle from './utils/throttle';
 import uniqueId from './utils/uniqueId';
 import { innerWidth, innerHeight } from './utils/innerSize';
 
-function assertElementFitsWidth(el, width) {
+function assertElementFitsWidth (el, width) {
     // -1: temporary bugfix, will be refactored soon
     return el.scrollWidth - 1 <= width;
 }
 
-function assertElementFitsHeight(el, height) {
+function assertElementFitsHeight (el, height) {
     // -1: temporary bugfix, will be refactored soon
     return el.scrollHeight - 1 <= height;
 }
 
-function noop() {}
+function noop () { }
 
 export default class TextFit extends React.Component {
     static propTypes = {
@@ -55,11 +55,11 @@ export default class TextFit extends React.Component {
         ready: false
     }
 
-    componentWillMount() {
+    componentWillMount () {
         this.handleWindowResize = throttle(this.handleWindowResize, this.props.throttle);
     }
 
-    componentDidMount() {
+    componentDidMount () {
         const { autoResize } = this.props;
         if (autoResize) {
             window.addEventListener('resize', this.handleWindowResize);
@@ -67,14 +67,14 @@ export default class TextFit extends React.Component {
         this.process();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate (prevProps) {
         const { ready } = this.state;
         if (!ready) return;
         if (shallowEqual(this.props, prevProps)) return;
         this.process();
     }
 
-    componentWillUnmount() {
+    componentWillUnmount () {
         const { autoResize } = this.props;
         if (autoResize) {
             window.removeEventListener('resize', this.handleWindowResize);
@@ -87,7 +87,7 @@ export default class TextFit extends React.Component {
         this.process();
     }
 
-    process() {
+    process () {
         const { min, max, mode, forceSingleModeWidth, onReady } = this.props;
         const el = this._parent;
         const wrapper = this._child;
@@ -122,7 +122,7 @@ export default class TextFit extends React.Component {
         let low = min;
         let high = max;
 
-        this.setState({ ready: false});
+        this.setState({ ready: false });
 
         series([
             // Step 1:
@@ -189,7 +189,7 @@ export default class TextFit extends React.Component {
         });
     }
 
-    render() {
+    render () {
         const {
             children,
             text,
@@ -219,7 +219,7 @@ export default class TextFit extends React.Component {
 
         return (
             <div ref={c => this._parent = c} style={finalStyle} {...props}>
-                <div ref={c => this._child = c} style={wrapperStyle}>
+                <div ref={c => this._child = c} style={wrapperStyle} contentEditable>
                     {text && typeof children === 'function'
                         ? ready
                             ? children(text)
